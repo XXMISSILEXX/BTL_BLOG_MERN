@@ -17,6 +17,8 @@ export default function SinglePost() {
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(5);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [newContent, setNewContent] = useState("");
   
   useEffect(() => {
     const getPost = async () => {
@@ -91,9 +93,7 @@ export default function SinglePost() {
       }
     }
   }
-  
-  
-}
+
 const handleCommentSubmit = async e => {
   e.preventDefault();
   try {
@@ -111,6 +111,30 @@ const handleCommentSubmit = async e => {
 const handleShowMoreComments = () => {
   setShowComments(showComments + 5);
 };
+
+function handleEditComment(commentId, currentContent) {
+  setNewContent(currentContent);
+  setEditingCommentId(commentId);
+}
+
+async function handleUpdateComment(commentId, newContent) {
+  try {
+    const res = await axios.put(`/comments/${commentId}`, {
+      content: newContent,
+      username: user.username
+    });
+    const updatedComment = res.data;
+    setPost(prevPost => ({
+      ...prevPost,
+      comments: prevPost.comments.map(comment =>
+        comment._id === commentId ? updatedComment : comment
+      )
+    }));
+    setEditingCommentId(null);
+  } catch (err) {
+    console.error(err);
+  }
+}
 
   return (
     <div className="singlePost">
@@ -261,3 +285,4 @@ const handleShowMoreComments = () => {
       </div>
     </div>
   );
+}
