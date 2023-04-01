@@ -214,3 +214,97 @@
 .comment.current-user-comment {
   background-color: #ffd699; /* light orange */
 }
+
+.singlePostWrapper form div {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.singlePostWrapper form div textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 0px;
+  background-color: #f2f2f2;
+  color: #333;
+  resize: none;
+}
+
+.singlePostWrapper form button[type="submit"] {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  float: right;
+  margin:5px 0px 5px; /* or adjust this value as needed */
+}
+
+.singlePostWrapper form button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+.comment-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.submit-button {
+  margin-left: 10px;
+}
+
+.speak-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #555;
+  display: flex;
+  align-items: center;
+}
+
+.speak-icon {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.share-twitter {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #1DA1F2;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.share-twitter:hover {
+  opacity: 0.8;
+}
+
+.share-twitter a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.share-twitter a span {
+  margin-left: 5px;
+}
+
+.twitter-icon {
+  width: 20px;
+  height: 20px;
+}

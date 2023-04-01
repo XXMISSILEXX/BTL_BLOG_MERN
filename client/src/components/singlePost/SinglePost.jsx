@@ -4,7 +4,7 @@ import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import { Context } from "../../context/Context";
 import "./singlePost.css";
-
+import { FaMicrophone } from "react-icons/fa";
 export default function SinglePost() {
   const location = useLocation();
   const path = location.pathname.split("/")[2];
@@ -17,9 +17,7 @@ export default function SinglePost() {
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(5);
-  const [newContent, setNewContent] = useState("");
-  const [editingCommentId, setEditingCommentId] = useState(null);
-
+  
   useEffect(() => {
     const getPost = async () => {
       const res = await axios.get("/posts/" + path);
@@ -30,6 +28,23 @@ export default function SinglePost() {
     getPost();
   }, [path]);
 
+  const startSpeechRecognition = () => {
+    const recognition = new window.webkitSpeechRecognition();
+    // Set the language for the speech recognition
+    recognition.lang = 'en-US';
+    // Start listening to the user's speech
+    recognition.start();
+    // Handle the results of the speech recognition
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      // Update the comment input with the transcribed speech
+      setCommentContent(transcript);
+    };
+    // Stop the speech recognition after 5 seconds
+    setTimeout(() => {
+      recognition.stop();
+    }, 5000);
+  };
   const handleDelete = async () => {
     try {
       await axios.delete(` /posts/${post._id} `, {
@@ -78,42 +93,20 @@ export default function SinglePost() {
   }
   
   
-  function handleEditComment(commentId, currentContent) {
-    setNewContent(currentContent);
-    setEditingCommentId(commentId);
-  }
-
-  async function handleUpdateComment(commentId, newContent) {
-    try {
-      const res = await axios.put(`/comments/${commentId}`, {
-        content: newContent,
-        username: user.username
-      });
-      const updatedComment = res.data;
-      setPost(prevPost => ({
-        ...prevPost,
-        comments: prevPost.comments.map(comment =>
-          comment._id === commentId ? updatedComment : comment
-        )
-      }));
-      setEditingCommentId(null);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  const handleCommentSubmit = async e => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(`/posts/${post._id}/comments`, {
-        username: user.username,
-        content: commentContent
-      });
-      console.log("comment post response:", res.data);
-      setCommentContent("");
-      setComments([...comments, res.data]);
-    } catch (err) {}
-  };
+}
+const handleCommentSubmit = async e => {
+  e.preventDefault();
+  try {
+    const res = await axios.post(`/posts/${post._id}/comments`, {
+      username: user.username,
+      content: commentContent
+    });
+    console.log("comment post response:", res.data);
+    setCommentContent("");
+    setComments([...comments, res.data]);
+    window.location.reload();
+  } catch (err) {}
+};
 
 const handleShowMoreComments = () => {
   setShowComments(showComments + 5);
@@ -175,19 +168,29 @@ const handleShowMoreComments = () => {
             Update
           </button>
         )}
+             <button className="share-twitter">
+    <a href={`https://twitter.com/intent/tweet?text=${post.title}&url=${window.location.href}`} target="_blank">
+      <span>Share on Twitter</span>
+    </a>
+  </button>
       </div>
       <div class="singlePostWrapper">
         <h3>Comment</h3>
-        <form onSubmit={handleCommentSubmit}>
-          <div className="">
-            <textarea
-              value={commentContent}
-              onChange={(e) => setCommentContent(e.target.value)}
-            ></textarea>
-          </div>
+            <form onSubmit={handleCommentSubmit}>
+        <div className="">
+          <textarea
+            value={commentContent}
+            onChange={(e) => setCommentContent(e.target.value)}
+          ></textarea>
+        </div>
+        <div className="comment-controls">
+        <button className="speak-button" onClick={startSpeechRecognition}>
+            <FaMicrophone />
+          </button>
           <button type="submit">Submit</button>
-        </form>
-
+          
+        </div>
+      </form>
         <div>
           <div>
             <div>
@@ -258,4 +261,3 @@ const handleShowMoreComments = () => {
       </div>
     </div>
   );
-}

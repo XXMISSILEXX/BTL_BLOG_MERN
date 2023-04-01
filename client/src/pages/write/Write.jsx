@@ -2,11 +2,13 @@ import { useContext, useState } from "react";
 import "./write.css";
 import axios from "axios";
 import { Context } from "../../context/Context";
+import { FaMicrophone } from 'react-icons/fa';
 
 export default function Write() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [file, setFile] = useState(null);
+  const [speechContent, setSpeechContent] = useState("");
   const { user } = useContext(Context);
 
   const handleSubmit = async (e) => {
@@ -14,7 +16,7 @@ export default function Write() {
     const newPost = {
       username: user.username,
       title,
-      desc,
+      desc: speechContent || desc, // Use the transcribed speech if available
     };
     if (file) {
       const data =new FormData();
@@ -31,6 +33,21 @@ export default function Write() {
       window.location.replace("/post/" + res.data._id);
     } catch (err) {}
   };
+
+  const startSpeechRecognition = () => {
+    const recognition = new window.webkitSpeechRecognition();
+    // Set the language for the speech recognition
+    recognition.lang = 'en-US';
+    // Start listening to the user's speech
+    recognition.start();
+    // Handle the results of the speech recognition
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      // Update the transcribed speech separately from the description state
+      setSpeechContent(transcript);
+    };
+  };
+
   return (
     <div className="write">
       {file && (
@@ -52,7 +69,8 @@ export default function Write() {
             placeholder="Title"
             className="writeInput"
             autoFocus={true}
-            onChange={e=>setTitle(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="writeFormGroup">
@@ -60,8 +78,13 @@ export default function Write() {
             placeholder="Tell your story..."
             type="text"
             className="writeInput writeText"
-            onChange={e=>setDesc(e.target.value)}
+            value={speechContent || desc} // Use the transcribed speech if available
+            onChange={(e) => setSpeechContent(e.target.value)} // Update the transcribed speech separately
           ></textarea>
+          <button className="speak-button" onClick={startSpeechRecognition}>
+            Speak
+            <span className="speak-icon"><FaMicrophone /></span>
+          </button>
         </div>
         <button className="writeSubmit" type="submit">
           Publish
