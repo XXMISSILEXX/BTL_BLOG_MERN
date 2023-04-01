@@ -17,6 +17,9 @@ export default function SinglePost() {
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(5);
+  const [newContent, setNewContent] = useState("");
+  const [editingCommentId, setEditingCommentId] = useState(null);
+
   useEffect(() => {
     const getPost = async () => {
       const res = await axios.get("/posts/" + path);
@@ -58,8 +61,6 @@ export default function SinglePost() {
     return `${formattedHours}:${formattedMinutes} ${ampm}`;
   }
 
-
-
   async function deleteComment(commentId) {
     const confirmed = window.confirm("Are you sure you want to delete this comment?");
     if (confirmed) {
@@ -76,23 +77,43 @@ export default function SinglePost() {
     }
   }
   
-
-function editComment(commentId) {
-  // Code to edit the comment with the given ID
   
-}
-const handleCommentSubmit = async e => {
-  e.preventDefault();
-  try {
-    const res = await axios.post(`/posts/${post._id}/comments`, {
-      username: user.username,
-      content: commentContent
-    });
-    console.log("comment post response:", res.data);
-    setCommentContent("");
-    setComments([...comments, res.data]);
-  } catch (err) {}
-};
+  function handleEditComment(commentId, currentContent) {
+    setNewContent(currentContent);
+    setEditingCommentId(commentId);
+  }
+
+  async function handleUpdateComment(commentId, newContent) {
+    try {
+      const res = await axios.put(`/comments/${commentId}`, {
+        content: newContent,
+        username: user.username
+      });
+      const updatedComment = res.data;
+      setPost(prevPost => ({
+        ...prevPost,
+        comments: prevPost.comments.map(comment =>
+          comment._id === commentId ? updatedComment : comment
+        )
+      }));
+      setEditingCommentId(null);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const handleCommentSubmit = async e => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`/posts/${post._id}/comments`, {
+        username: user.username,
+        content: commentContent
+      });
+      console.log("comment post response:", res.data);
+      setCommentContent("");
+      setComments([...comments, res.data]);
+    } catch (err) {}
+  };
 
 const handleShowMoreComments = () => {
   setShowComments(showComments + 5);
@@ -170,21 +191,65 @@ const handleShowMoreComments = () => {
         <div>
           <div>
             <div>
-            {post.comments && post.comments.slice(0, showComments).map((comment) => (
-     <div className={`comment ${comment.username === user?.username ? "current-user-comment" : ""}`} key={comment._id}>
-        <p>{comment.content}</p>
-        <span className="comment-timestamp">By {comment.username} on {new Date(comment.createdAt).toLocaleDateString()} at {formatTime(comment.createdAt)}</span>
+            {post.comments &&
+          post.comments.slice(0, showComments).map((comment) => (
+            <div
+              className={`comment ${
+                comment.username === user?.username
+                  ? "current-user-comment"
+                  : ""
+              }`}
+              key={comment._id}
+            >
+              <p>{comment.content}</p>
+              <span className="comment-timestamp">
+                By {comment.username} on{" "}
+                {new Date(comment.createdAt).toLocaleDateString()} at{" "}
+                {formatTime(comment.createdAt)}
+              </span>
 
-        {user && user.username === comment.username && (
-          <div className="comment-buttons">
-            <button className="delete-button" onClick={() => deleteComment(comment._id)}>Delete</button>
-            <button className="edit-button" onClick={() => editComment(comment._id)}>Edit</button>
-          </div>
-        )}
+              {user && user.username === comment.username && (
+                <div className="comment-buttons">
+                  <button
+                    className="delete-button"
+                    onClick={() => deleteComment(comment._id)}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="edit-button"
+                    onClick={() =>
+                      handleEditComment(comment._id, comment.content)
+                    }
+                  >
+                    Edit
+                  </button>
+                </div>
+              )}
+
+              {editingCommentId === comment._id && user && user.username === comment.username && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleUpdateComment(comment._id, newContent);
+                  }}
+                >
+                  <textarea
+                    value={newContent}
+                    onChange={(e) => setNewContent(e.target.value)}
+                  />
+                  <button type="submit">Save</button>
+                  <button onClick={() => setEditingCommentId(null)}>
+                    Cancel
+                  </button>
+                </form>
+              )}
       </div>
     ))}
 
-              {post.comments && post.comments.length > showComments && (
+      
+
+      {post.comments && post.comments.length > showComments && (
         <button className="show-more-comments" onClick={handleShowMoreComments}>Show more comments</button>
       )}
             </div>
