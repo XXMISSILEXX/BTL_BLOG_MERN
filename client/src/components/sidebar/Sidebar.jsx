@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./sidebar.css";
-
+import CurrentWeather from "../../pages/weather/CurrentWeather"
+import Trivia from "../trivia/trivia";
 export default function Sidebar() {
   const [cats, setCats] = useState([]);
 
@@ -44,7 +45,22 @@ export default function Sidebar() {
           <i className="sidebarIcon fab fa-pinterest-square"></i>
           <i className="sidebarIcon fab fa-instagram-square"></i>
         </div>
+        <div className="sidebarItem">
+            <CurrentWeather/>
+        </div>
+        <div>
+          <Trivia/>
+        </div>
       </div>
+      {/* <div className="sidebar-item">
+        <h3>Current Temperature:</h3>
+        <p>{currentTemperature} °C</p>
+      </div>
+      <div className="sidebar-item">
+        <h3>Current Condition:</h3>
+        <p>{currentCondition}</p>
+      </div> */}
     </div>
+    
   );
 }

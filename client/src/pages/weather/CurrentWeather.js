@@ -1,52 +1,50 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { debounce } from 'lodash'; // import debounce function from lodash library
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faCloud, faCloudShowersHeavy, faCloudRain } from '@fortawesome/free-solid-svg-icons';
 import './weather.css';
-
 export default function WeatherComponent() {
-  const [forecastData, setForecastData] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
   const [location, setLocation] = useState(null);
 
+  // Debounced function to update location when user moves
+  const debouncedSetLocation = debounce((newLocation) => setLocation(newLocation), 1000);
+
   useEffect(() => {
+    // Get the user's location using the browser's geolocation API
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
+      navigator.geolocation.watchPosition(
         (position) => {
-          setLocation({
+          const newLocation = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-          });
+          };
+
+          // Use debounced function to update location state
+          debouncedSetLocation(newLocation);
         },
         (error) => {
           console.error(error.message);
         }
       );
     }
-  }, []);
+  }, [debouncedSetLocation]);
 
   useEffect(() => {
     if (location) {
-      async function fetchForecastData() {
+      async function fetchWeatherData() {
         try {
           const response = await axios.get(`/weather?lat=${location.latitude}&lon=${location.longitude}`);
-          const forecastList = response.data.forecastData;
-          const forecastData = forecastList.map((item) => ({
-            date: item.date,
-            description: item.description,
-            temperature: item.temperature,
-            humidity: item.humidity,
-          }));
-      
-          setForecastData(forecastData);
+          setWeatherData(response.data.currentData);
         } catch (error) {
           console.error(error.message);
         }
       }
 
-      fetchForecastData();
+      fetchWeatherData();
     }
   }, [location]);
-
   const getWeatherIcon = (description) => {
     switch (description) {
       case 'clear sky':
@@ -66,25 +64,18 @@ export default function WeatherComponent() {
         return null;
     }
   };
-
   return (
-    <div className="weather-container">
+    <div>
       {location ? (
         <>
-          <p className="location">Your location: {location.latitude}, {location.longitude}</p>
-          {forecastData ? (
-            <div>
-              <h2>Weather Forecast</h2>
-              <ul className="forecast-list">
-                {forecastData.map((forecast) => (
-                  <li key={forecast.date} className="forecast-item">
-                    <p className="date-time">Date and time: {forecast.date}</p>
-                    <p className="description">{getWeatherIcon(forecast.description)} {forecast.description}</p>
-                    <p className="temperature">Temperature: {forecast.temperature} °C</p>
-                    <p className="humidity">{forecast.humidity}%</p>
-                  </li>
-                ))}
-              </ul>
+          <p>Your location: {location.latitude}, {location.longitude}</p>
+          {weatherData ? (
+            <div className="forecast-item">
+                <p>{getWeatherIcon(weatherData.description)}</p>
+              <p className="description">Description: {weatherData.description}</p>
+              <p className="temperature">Temperature: {weatherData.temperature} °C</p>
+              <p className="humidity">Humidity: {weatherData.humidity}%</p>
+              
             </div>
           ) : (
             <p>Loading...</p>

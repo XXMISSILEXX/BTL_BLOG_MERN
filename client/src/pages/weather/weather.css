@@ -1,0 +1,129 @@
+.weather-container {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.location {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+.forecast-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+h2 {
+    font-size: 2.5rem;
+    color: #4c4c4c;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px #b3b3b3;
+  }
+  
+.forecast-item {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  min-width: 200px;
+  text-align: center;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+
+.forecast-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.date-time {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #777;
+}
+
+.weather-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #ffc107;
+}
+
+.description {
+  text-transform: capitalize;
+  color: #333;
+}
+
+.temperature,
+.humidity {
+  margin-top: 0.5rem;
+  color: #777;
+}
+
+.temperature {
+  font-weight: bold;
+}
+
+.humidity::before {
+  content: "Humidity: ";
+  font-weight: bold;
+  color: #333;
+}
+
+.humidity {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  background-color: #007bff;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.humidity:hover {
+  background-color: #0062cc;
+  cursor: pointer;
+}
+
+.humidity::after {
+  content: "\25BC";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #fff;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.humidity:hover::after {
+  transform: translateY(-50%) rotate(-180deg);
+}
+
+@media (max-width: 768px) {
+  .forecast-list {
+    justify-content: center;
+  }
+
+  .forecast-item {
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
+}
+
+
+.CurrentWeather_p{
+    margin-top:20px;
+}

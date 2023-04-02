@@ -6,6 +6,9 @@ import Settings from "./pages/settings/Settings";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Weather from "./pages/weather/Weather";
+import CurrentWeather from "./pages/weather/CurrentWeather";
+import Crypto from "./pages/crypto/Crypto";
+import Trivia from "./components/trivia/trivia"
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "./context/Context";
@@ -26,8 +29,17 @@ function App() {
         <Route path="/weather">
           <Weather />
         </Route>
+        <Route path="/CurrentWeather">
+          <CurrentWeather/>
+        </Route>
+        <Route path="/Crypto">
+            <Crypto/>
+        </Route>
         <Route path="/post/:postId">
           <Single />
+        </Route>
+        <Route path="/trivia">
+          <Trivia/>
         </Route>
       </Switch>
     </Router>

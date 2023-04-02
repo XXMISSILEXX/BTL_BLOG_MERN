@@ -8,6 +8,8 @@ const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const commentRoute = require("./routes/comments");
 const weatherRoute = require("./routes/weather")
+const cryptoRoute = require("./routes/crypto")
+const triviaRoute =require("./routes/trivia");
 const multer = require("multer");
 const path = require("path");
 
@@ -47,6 +49,8 @@ app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
 app.use("/api/",commentRoute);
 app.use("/api/weather",weatherRoute);
+app.use("/api/crypto",cryptoRoute);
+app.use("/api/trivia",triviaRoute);
 app.listen("5000", () => {
   console.log("Backend is running.");
 });
