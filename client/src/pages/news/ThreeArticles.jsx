@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import "./News.css";
-import NewsItem from "../../components/news-item/NewsItem";
 import axios from "axios";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import NewsItem2 from "../../components/news-item/NewsItem2";
 
 export default function ThreeArticles(){
     const [articles, setArticles] = useState([]);
@@ -20,10 +23,21 @@ export default function ThreeArticles(){
         getFeaturedArticles();
     }, []);
 
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        horizontal: true, // add this property to make the slider horizontal
+        autoplay: true, // add this property to enable auto play
+        autoplaySpeed: 2500 // add this property to set the auto play interval in milliseconds
+    };
+
     return (
-        <div className="news-container">
+      <Slider {...settings}>  
             {articles.map(({ title, description, url, urlToImage }, index) => (
-                <NewsItem
+                <NewsItem2
                     key={index}
                     title={title}
                     description={description}
@@ -31,6 +45,7 @@ export default function ThreeArticles(){
                     urlToImage={urlToImage}
                 />
             ))}
-        </div>
+        
+      </Slider>
     )
 }

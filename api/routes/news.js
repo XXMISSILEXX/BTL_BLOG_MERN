@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
   try { 
     const response = await axios.get(url);
     const articles = response.data.articles;
-    const featuredArticles = articles.slice(0, 3); // get the first three articles
+    const featuredArticles = articles.slice(0, 9); // get the first three articles
     res.send({articles: articles, featuredArticles: featuredArticles});
   } catch (error) {
     console.log(error);

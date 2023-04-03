@@ -13,7 +13,7 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
   const { search } = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(3);
+  const [postsPerPage, setPostsPerPage] = useState(4);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -35,13 +35,13 @@ export default function Home() {
           <CurrentWeather/>
         </Sidebar>
       </div>
-      <ThreeArticles/>
       <Pagination
           totalPosts={posts.length}
           postsPerPage={postsPerPage}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
       />
+      <ThreeArticles/>  
     </>
   );
 }
