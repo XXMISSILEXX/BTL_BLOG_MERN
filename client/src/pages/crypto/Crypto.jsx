@@ -21,11 +21,12 @@ export default function CryptoTable() {
       <thead>
         <tr>
           <th>Rank</th>
+          <th>Icon</th>
           <th>Name</th>
-          <th>Symbol</th>
+          <th>Symbol</th>  
           <th>Price</th>
           <th>Market Cap</th>
-          <th>Icon</th>
+          
         </tr>
       </thead>
       <tbody>
