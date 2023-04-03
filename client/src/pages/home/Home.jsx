@@ -33,13 +33,13 @@ export default function Home() {
         <Sidebar >
           <CurrentWeather/>
         </Sidebar>
-        <Pagination className="paging"
+      </div>
+      <Pagination
           totalPosts={posts.length}
           postsPerPage={postsPerPage}
           setCurrentPage={setCurrentPage}
           currentPage={currentPage}
-        />
-      </div>
+      />
     </>
   );
 }

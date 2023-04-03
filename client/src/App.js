@@ -12,6 +12,7 @@ import Trivia from "./components/trivia/trivia"
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useContext } from "react";
 import { Context } from "./context/Context";
+import News from "./pages/news/News";
 
 function App() {
   const { user } = useContext(Context);
@@ -37,6 +38,9 @@ function App() {
         </Route>
         <Route path="/post/:postId">
           <Single />
+        </Route>
+        <Route path="/news">
+          <News/>
         </Route>
         <Route path="/trivia">
           <Trivia/>
