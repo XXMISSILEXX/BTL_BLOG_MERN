@@ -7,6 +7,7 @@ import "./home.css";
 import axios from "axios";
 import { useLocation } from "react-router";
 import Pagination from "../Pagination/Pagination";
+import ThreeArticles from "../news/ThreeArticles";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -34,6 +35,7 @@ export default function Home() {
           <CurrentWeather/>
         </Sidebar>
       </div>
+      <ThreeArticles/>
       <Pagination
           totalPosts={posts.length}
           postsPerPage={postsPerPage}

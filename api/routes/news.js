@@ -8,7 +8,9 @@ router.get('/', async (req, res) => {
   const url = `https://newsapi.org/v2/everything?q=apple&from=2023-04-02&to=2023-04-02&sortBy=popularity&apiKey=${apiKey}`;
   try { 
     const response = await axios.get(url);
-    res.send(response.data);
+    const articles = response.data.articles;
+    const featuredArticles = articles.slice(0, 3); // get the first three articles
+    res.send({articles: articles, featuredArticles: featuredArticles});
   } catch (error) {
     console.log(error);
     res.status(500).send('Error getting news API');
