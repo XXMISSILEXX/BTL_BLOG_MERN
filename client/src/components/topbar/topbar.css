@@ -1,25 +1,30 @@
 .top {
   width: 100%;
   height: 50px;
-  background-color: white;
+  background-color: #fff;
   position: sticky;
   top: 0;
   display: flex;
   align-items: center;
-  font-family: "Josefin Sans", sans-serif;
+  justify-content: space-between;
+  font-family: "Montserrat", sans-serif;
   z-index: 999;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .topLeft,
 .topRight {
-  flex: 3;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .topCenter {
-  flex: 6;
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .topIcon {
@@ -48,13 +53,43 @@
 .topListItem {
   margin-right: 20px;
   font-size: 18px;
-  font-weight: 300;
+  font-weight: 400;
   cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.topListItem:hover {
+  color: #555;
+  transform: translateY(-5px);
+}
+
+.topListItem::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #555;
+  transform: scaleX(0);
+  transition: all 0.3s ease;
+}
+
+.topListItem:hover::before {
+  transform: scaleX(1);
 }
 
 .topSearchIcon {
   font-size: 18px;
-  color: #666;
+  color: #444;
   cursor: pointer;
   margin-left: 15px;
+}
+
+.topListIcon {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #444;
+  cursor: pointer;
 }

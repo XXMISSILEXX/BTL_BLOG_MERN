@@ -17,14 +17,13 @@ export default function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebarItem">
-        <span className="sidebarTitle">ABOUT ME</span>
+        <span className="sidebarTitle">NHÓM 1-VJP_PRO- Tran Hieu & PM Duc</span>
         <img
-          src="https://i.pinimg.com/236x/1e/3f/58/1e3f587572a7a7b20bbf1828595a1786--holiday-party-themes-holiday-gift-guide.jpg"
+          src="http://localhost:5000/images/Blog_Header.jpg"
           alt=""
         />
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate qui
-          necessitatibus nostrum illum reprehenderit.
+          Alone,we can do so little; together,we can do so much - Hellen Keller
         </p>
       </div>
       <div className="sidebarItem">
