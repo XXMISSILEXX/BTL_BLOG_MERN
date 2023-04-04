@@ -66,28 +66,126 @@ router.get("/:id", async (req, res) => {
     res.status(500).json(err);
   }
 });
-
 //GET ALL POSTS
 router.get("/", async (req, res) => {
   const username = req.query.user;
   const catName = req.query.cat;
+  const titleName = req.query.title;
+  const fromDate = req.query.from; // format: yyyy-mm-dd
+  const toDate = req.query.to; // format: yyyy-mm-dd
+
   try {
+    let query = {};
     let posts;
+
     if (username) {
-      posts = await Post.find({ username });
-    } else if (catName) {
-      posts = await Post.find({
-        categories: {
-          $in: [catName],
-        },
-      });
-    } else {
-      posts = await Post.find();
+      query.username = username;
     }
+    if (catName) {
+      query.categories = { $in: [catName] };
+    }
+    if (titleName) {
+      query.title = { $regex: titleName, $options: "i" };
+    }
+    if (fromDate || toDate) {
+      query.createdAt = {};
+      if (fromDate) {
+        query.createdAt.$gte = new Date(fromDate);
+      }
+      if (toDate) {
+        query.createdAt.$lte = new Date(toDate);
+      }
+    }
+
+    posts = await Post.find(query);
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
   }
 });
+
+//GET ALL POSTS
+// router.get("/", async (req, res) => {
+//   const username = req.query.user;
+//   const catName = req.query.cat;
+//   const titleName =req.query.title;
+//   const fromDate = req.query.from; // format: yyyy-mm-dd
+//   const toDate = req.query.to; // format: yyyy-mm-dd
+//   try {
+//     let posts;
+//     if (username) {
+//       posts = await Post.find({ username });
+//     }
+//      else if (catName) {
+//       posts = await Post.find({
+//         categories: {
+//           $in: [catName],
+//         },
+//       });
+//     }
+//     else if (titleName) {
+//       posts = await Post.find({
+//         title: { $regex: titleName, $options: "i" }, // case-insensitive search
+//       });
+    
+//     }
+//     else if (fromDate || toDate) {
+//       query.createdAt = {};
+//       if (fromDate) {
+//         query.createdAt.$gte = new Date(fromDate);
+//       }
+//       if (toDate) {
+//         query.createdAt.$lte = new Date(toDate);
+//       }
+//       posts = await Post.find(query);
+//     }
+//      else {
+//       posts = await Post.find();
+//     }
+//     res.status(200).json(posts);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
+// GET ALL POSTS
+// router.get("/", async (req, res) => {
+//   const username = req.query.user;
+//   const catName = req.query.cat;
+//   const titleName = req.query.title;
+//   const fromDate = req.query.from; // format: yyyy-mm-dd
+//   const toDate = req.query.to; // format: yyyy-mm-dd
+//   try {
+//     let posts;
+//     let query = {};
+
+//     if (username) {
+//       query.username = username;
+//     }
+
+//     if (catName) {
+//       query.categories = { $in: [catName] };
+//     }
+
+//     if (titleName) {
+//       query.title = { $regex: titleName, $options: "i" };
+//     }
+
+//     if (fromDate || toDate) {
+//       query.createdAt = {};
+//       if (fromDate) {
+//         query.createdAt.$gte = new Date(fromDate);
+//       }
+//       if (toDate) {
+//         query.createdAt.$lte = new Date(toDate);
+//       }
+//     }
+
+//     posts = await Post.find(query);
+//     console.log(posts);
+//     res.status(200).json(posts);
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
 
 module.exports = router;

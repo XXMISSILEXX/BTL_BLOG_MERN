@@ -45,7 +45,7 @@ export default function Sidebar() {
           <i className="sidebarIcon fab fa-instagram-square"></i>
         </div>
         <div className="sidebarItem">
-            <CurrentWeather/>
+            {/* <CurrentWeather/> */}
         </div>
         <div>
           <Trivia/>
