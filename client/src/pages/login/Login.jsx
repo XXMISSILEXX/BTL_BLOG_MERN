@@ -20,6 +20,9 @@ export default function Login() {
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE" });
+      if (err.response.status === 400) {
+        alert("Incorrect username or password!");
+      }
     }
   };
 
