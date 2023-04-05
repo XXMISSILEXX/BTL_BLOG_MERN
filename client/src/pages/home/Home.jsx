@@ -25,6 +25,7 @@ export default function Home() {
   const [fromDateInputValue, setFromDateInputValue] = useState("");
   const [toDateInputValue, setToDateInputValue] = useState("");
 
+  const [sort, setSortOrder] = useState("desc");
   const handleUsernameInputChange = (e) => {
     setUsernameInputValue(e.target.value);
   };
@@ -56,25 +57,54 @@ export default function Home() {
     setShowToDateInput(!showToDateInput);
   };
 
+  // const fetchPosts = async () => {
+  //   const params = new URLSearchParams(search);
+  //   const user = showUsernameInput ? usernameInputValue : null;
+  //   const title = showTitleInput ? titleInputValue : null;
+  //   const from = showFromDateInput ? fromDateInputValue : null;
+  //   const to = showToDateInput ? toDateInputValue : null;
+
+  //   console.log("Search params:", {
+  //     user,
+  //     title,
+  //     from,
+  //     to,
+  //   });
+  //   const res = await axios.get("/posts", {
+  //     params: {
+  //       user,
+  //       title,
+  //       from,
+  //       to,
+  //     },
+  //   });
+  //   setPosts(res.data);
+  // };
+  const toggleSortOrder = () => {
+    setSortOrder(sort === "desc" ? "asc" : "desc");
+  };
   const fetchPosts = async () => {
     const params = new URLSearchParams(search);
     const user = showUsernameInput ? usernameInputValue : null;
     const title = showTitleInput ? titleInputValue : null;
     const from = showFromDateInput ? fromDateInputValue : null;
     const to = showToDateInput ? toDateInputValue : null;
-
+  
     console.log("Search params:", {
       user,
       title,
       from,
       to,
+      sort,
     });
+  
     const res = await axios.get("/posts", {
       params: {
         user,
         title,
         from,
         to,
+        sort, // Add sortOrder as a query parameter
       },
     });
     setPosts(res.data);
@@ -121,6 +151,13 @@ export default function Home() {
                     onChange={handleToDateCheckboxChange}
                   />
                   <label>To date</label>
+                </div>
+                <div className="checkbox-container">
+                  <input
+                    type="checkbox"
+                    onChange={toggleSortOrder}
+                  />
+                  <label>Oldest/Newest</label>
                 </div>
                 <div className="checkbox-container">
                   <button onClick={fetchPosts} className="Search-btn">

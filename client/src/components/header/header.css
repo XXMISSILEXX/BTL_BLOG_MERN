@@ -28,3 +28,55 @@
     margin-top: 40px;
     object-fit: cover;
 }
+
+/* Define a CSS keyframe animation */
+@keyframes colorChange2 {
+  0% {
+    color: transparent; /* Start with transparent color */
+  }
+  25%{
+    color:red;
+  }
+  50% {
+    color: #ffcccb; /* Change to desired color at 50% of animation duration */
+  }
+  75%{
+    color:aqua;
+  }
+  100% {
+    color: #000; /* Change back to black color at the end of animation duration */
+  }
+}
+@keyframes colorChange1 {
+  0% {
+    color: transparent; /* Start with transparent color */
+    opacity: 0.5;
+  }
+  25%{
+    color: #1ab074;
+    opacity: 1;
+  }
+  50% {
+    color:red; /* Change to desired color at 50% of animation duration */
+    opacity: 0.5;
+  }
+  75%{
+    color:aqua;
+    opacity: 1;
+  }
+  100% {
+    color: #000; /* Change back to black color at the end of animation duration */
+  }
+}
+
+/* Apply the CSS keyframe animation to an element */
+.myElement2 {
+  animation: colorChange2 8s infinite; /* Apply the animation with a 2s duration, and loop infinitely */
+  transition: color 0.3s ease-in-out;
+}
+
+
+.myElement1{
+  animation: colorChange1 2s infinite; /* Apply the animation with a 2s duration, and loop infinitely */
+  transition: color 0.3s ease-in-out;
+}

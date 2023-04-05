@@ -5,7 +5,7 @@ const router = require("express").Router();
 router.get('/', async (req, res) => {
   try {
     const { lat, lon } = req.query;
-    const apiKey = 'b741dcfebd8b3d2bcc857777cf2ff622';
+    const apiKey = '3988241cbc46aad348899d51e1852bc7';
     const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
     const response = await axios.get(apiUrl);
     
