@@ -19,11 +19,12 @@ export default function Settings() {
     dispatch({ type: "UPDATE_START" });
     const updatedUser = {
       userId: user._id,
-      username,
-      email,
-      password,
+      username, //: username === user.username ? user.username : username, // Use default username if nothing has changed,
+      email, //email === user.email ? user.email: email,
+      password //password === user.password ? user.password: password,
      
     };
+    console.log(updatedUser);
     if (file) {
       const data = new FormData();
       const filename = Date.now() + file.name;
@@ -53,7 +54,7 @@ export default function Settings() {
           <label>Profile Picture</label>
           <div className="settingsPP">
             <img
-              src={file ? URL.createObjectURL(file) : PF+user._profilePic}
+              src={file ? URL.createObjectURL(file) : PF+user.profilePic}
               alt=""
             />
             <label htmlFor="fileInput">
@@ -69,18 +70,23 @@ export default function Settings() {
           <label>Username</label>
           <input
             type="text"
-            placeholder={user.username}
+            defaultValue={user.username}
+            //placeholder={user.username}
+            //onBlur={(e) => setUsername(e.target.value)} // Set the default username state when the input field loses focus
             onChange={(e) => setUsername(e.target.value)}
           />
           <label>Email</label>
           <input
             type="email"
-            placeholder={user.email}
+            defaultValue={user.email}
+            //placeholder={user.email}
+            //onBlur={(e) => setEmail(e.target.value)} // Set the default email state when the input field loses focus
             onChange={(e) => setEmail(e.target.value)}
           />
           <label>Password</label>
           <input
             type="password"
+            defaultValue={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className="settingsSubmit" type="submit">
