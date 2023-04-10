@@ -9,7 +9,7 @@ router.put("/:id", async (req, res) => {
     try {
       const updatedUser = {};
       if (req.file) {
-        updatedUser.profilePic = req.file.filename;
+        updatedUser.profilePic = req.body.filename;
       }
       if (req.body.username) {
         updatedUser.username = req.body.username;
