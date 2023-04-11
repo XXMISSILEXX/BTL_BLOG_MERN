@@ -26,6 +26,7 @@ export default function Home() {
   const [toDateInputValue, setToDateInputValue] = useState("");
 
   const [sort, setSortOrder] = useState("desc");
+  const [limit,setPostsLimit] = useState(10);
   const handleUsernameInputChange = (e) => {
     setUsernameInputValue(e.target.value);
   };
@@ -83,6 +84,16 @@ export default function Home() {
   const toggleSortOrder = () => {
     setSortOrder(sort === "desc" ? "asc" : "desc");
   };
+  const resetlimit=() =>{
+    setPostsLimit(10);
+  }
+  const Increaselimit=() =>{
+    setPostsLimit(limit+10);
+  }
+  const ResetCurrentPage= async() =>{
+    setCurrentPage(1);
+    console.log("Current page:", currentPage);
+  }
   const fetchPosts = async () => {
     const params = new URLSearchParams(search);
     const user = showUsernameInput ? usernameInputValue : null;
@@ -96,6 +107,7 @@ export default function Home() {
       from,
       to,
       sort,
+      limit,
     });
   
     const res = await axios.get("/posts", {
@@ -105,15 +117,20 @@ export default function Home() {
         from,
         to,
         sort, // Add sortOrder as a query parameter
+        limit,
       },
     });
     setPosts(res.data);
+    console.log(currentPage);
   };
 
   useEffect(() => {
     fetchPosts();
-  }, [search]);
+  }, [search,limit]);
 
+  // useEffect(()=>{
+  //   ResetCurrentPage();
+  // },[search]);
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = posts.slice(firstPostIndex, lastPostIndex);
@@ -160,7 +177,7 @@ export default function Home() {
                   <label>Oldest/Newest</label>
                 </div>
                 <div className="checkbox-container">
-                  <button onClick={fetchPosts} className="Search-btn">
+                  <button onClick={ () => { resetlimit();ResetCurrentPage(); fetchPosts(); } } className="Search-btn">
                     Search
                   </button>
                 </div>
@@ -211,7 +228,14 @@ export default function Home() {
             </div>
           </div>
           <Posts posts={currentPosts} />
+          {currentPage === Math.ceil(posts.length/4) && posts.length === limit && (
+          <button onClick={ () => { Increaselimit(); fetchPosts(); } } className="LoadMore-btn">
+                    Load More Posts
+                  </button>
+                  )}
+                  
         </div>
+        
         <Sidebar className="Sidebar">
           <CurrentWeather />
         </Sidebar>

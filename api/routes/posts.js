@@ -74,6 +74,7 @@ router.get("/", async (req, res) => {
   const fromDate = req.query.from; // format: yyyy-mm-dd
   const toDate = req.query.to; // format: yyyy-mm-dd
   const sort = req.query.sort || 'desc';
+  const limit =req.query.limit;
   try {
     let query = {};
     let posts;
@@ -96,8 +97,7 @@ router.get("/", async (req, res) => {
         query.createdAt.$lte = new Date(toDate);
       }
     }
-
-    posts = await Post.find(query).sort({ createdAt: sort }); // sort by createdAt field based on sort parameter
+    posts = await Post.find(query).sort({ createdAt: sort }).limit(parseInt(limit)).exec(); // sort by createdAt field based on sort parameter
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
