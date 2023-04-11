@@ -25,4 +25,19 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+// Define pre-hook to update associated posts' usernames
+UserSchema.pre('save', async function(next) {
+  const updatedUsername = this.username;
+  const posts = await Post.find({ username: this.username });
+  
+  // Update all posts with the new username
+  await Promise.all(posts.map(post => {
+    post.username = updatedUsername;
+    return post.save();
+  }));
+
+  next();
+});
+
+
 module.exports = mongoose.model("User", UserSchema);

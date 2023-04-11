@@ -12,25 +12,23 @@ export default function Settings() {
   const [success, setSuccess] = useState(false);
 
   const { user, dispatch } = useContext(Context);
-  const PF = "http://localhost:5000/images/";
+  const PF = "http://localhost:5000/images/"
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch({ type: "UPDATE_START" });
     const updatedUser = {
       userId: user._id,
-      username, //: username === user.username ? user.username : username, // Use default username if nothing has changed,
-      email, //email === user.email ? user.email: email,
-      password //password === user.password ? user.password: password,
-     
+      username,
+      email,
+      password,
     };
-    console.log(updatedUser);
     if (file) {
       const data = new FormData();
       const filename = Date.now() + file.name;
       data.append("name", filename);
       data.append("file", file);
-      updatedUser.profilePic = filename;  
+      updatedUser.profilePic = filename;
       try {
         await axios.post("/upload", data);
       } catch (err) {}
@@ -42,7 +40,9 @@ export default function Settings() {
     } catch (err) {
       dispatch({ type: "UPDATE_FAILURE" });
     }
+    console.log(updatedUser);
   };
+  
   return (
     <div className="settings">
       <div className="settingsWrapper">
@@ -71,22 +71,19 @@ export default function Settings() {
           <input
             type="text"
             defaultValue={user.username}
-            //placeholder={user.username}
-            //onBlur={(e) => setUsername(e.target.value)} // Set the default username state when the input field loses focus
+            placeholder={user.username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <label>Email</label>
           <input
             type="email"
             defaultValue={user.email}
-            //placeholder={user.email}
-            //onBlur={(e) => setEmail(e.target.value)} // Set the default email state when the input field loses focus
+            placeholder={user.email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <label>Password</label>
           <input
             type="password"
-            defaultValue={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <button className="settingsSubmit" type="submit">
