@@ -17,12 +17,22 @@ export default function Settings() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch({ type: "UPDATE_START" });
-    const updatedUser = {
-      userId: user._id,
-      username,
-      email,
-      password,
-    };
+    // const updatedUser = {
+    //   userId: user._id,
+    //   username,
+    //   email,
+    //   password,
+    // };
+    const updatedUser = { userId: user._id };
+    if (username !== user.username && username !== "") {
+      updatedUser.username = username;
+    }
+    if (email !== user.email && email !== "") {
+      updatedUser.email = email;
+    }
+    if (password !== "") {
+      updatedUser.password = hashedPassword;
+    }
     if (file) {
       const data = new FormData();
       const filename = Date.now() + file.name;
