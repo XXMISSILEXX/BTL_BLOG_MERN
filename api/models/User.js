@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const Post = require("./Post");
 const UserSchema = new mongoose.Schema(
   {
     username: {
@@ -29,7 +29,6 @@ const UserSchema = new mongoose.Schema(
 UserSchema.pre('save', async function(next) {
   const updatedUsername = this.username;
   const posts = await Post.find({ username: this.username });
-  
   // Update all posts with the new username
   await Promise.all(posts.map(post => {
     post.username = updatedUsername;

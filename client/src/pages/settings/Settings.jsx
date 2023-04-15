@@ -82,7 +82,8 @@ export default function Settings() {
             type="text"
             defaultValue={user.username}
             placeholder={user.username}
-            onChange={(e) => setUsername(e.target.value)}
+            // onChange={(e) => setUsername(e.target.value)}
+            disabled
           />
           <label>Email</label>
           <input
