@@ -31,7 +31,7 @@ export default function Settings() {
       updatedUser.email = email;
     }
     if (password !== "") {
-      updatedUser.password = hashedPassword;
+      updatedUser.password = password;
     }
     if (file) {
       const data = new FormData();
